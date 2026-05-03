@@ -17,13 +17,13 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin:  'http://localhost:5700',
-    credentials: true,
+    origin: 'http://localhost:4200',
+    Credential: true,
   });
 
+  const port = process.env.SERVER_PORT || 3000;
+  await app.listen(port);
+
   console.log(`🚀 Server running on http://localhost:${port}/api`);
-
-  return app;
 }
-
 bootstrap();

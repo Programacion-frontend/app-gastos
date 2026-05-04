@@ -1,12 +1,11 @@
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
+  IsDateString,
+  IsInt,
   IsNotEmpty,
   IsNumber,
-  IsDateString,
-  IsString,
   IsOptional,
-  IsInt,
-  IsArray,
+  IsString
 } from 'class-validator';
 
 export class CreateMovimientoDto {
@@ -30,12 +29,6 @@ export class CreateMovimientoDto {
   @IsOptional()
   @IsInt({ message: 'El ID de la moneda debe ser un número entero' })
   id_moneda?: number;
-
-  @IsOptional()
-  @IsArray({ message: 'Los tags deben ser un arreglo' })
-  @IsInt({ each: true, message: 'Cada ID de tag debe ser un número entero' })
-  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
-  tags?: number[];
 
   @IsOptional()
   @IsInt({ message: 'El ID de usuario debe ser un número entero' })

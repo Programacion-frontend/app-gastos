@@ -1,21 +1,21 @@
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
   ForbiddenException,
+  Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, In, Repository, IsNull } from 'typeorm';
-import { Movimiento } from './entity/movimiento.entity';
 import { Usuario } from 'src/user/usuario/entity/usuario.entity';
+import { In, IsNull, Repository } from 'typeorm';
 import { Categoria } from '../../categoria/entity/categoria.entity';
 import { Moneda } from '../../moneda/entity/moneda.entity';
-import { Prestamo } from '../../prestamo/prestamos/entity/prestamo.entity';
 import { Abono } from '../../prestamo/abono/entity/abono.entity';
+import { Prestamo } from '../../prestamo/prestamos/entity/prestamo.entity';
 import { Tag } from '../../tag/entity/tag.entity';
 import { CreateMovimientoDto } from './dto/create-movimiento.dto';
-import { UpdateMovimientoDto } from './dto/update-movimiento.dto';
 import { FilterMovimientoDto } from './dto/filter-movimiento.dto';
+import { UpdateMovimientoDto } from './dto/update-movimiento.dto';
+import { Movimiento } from './entity/movimiento.entity';
 
 
 @Injectable()
@@ -109,7 +109,6 @@ private async obtenerMovimientosFiltrados(
       descripcion,
       id_categoria,
       id_moneda,
-      tags,
       id_usuario,
     } = createMovimientoDto;
     const currentUser = await this.usuarioRepo.findOne({
@@ -174,15 +173,6 @@ private async obtenerMovimientosFiltrados(
       movimiento.moneda = moneda;
     }
 
-    if (tags && tags.length > 0) {
-      const tagsEntities = await this.tagRepo.find({
-        where: { id_tag: In(tags) },
-      });
-      if (tagsEntities.length !== tags.length) {
-        throw new NotFoundException('Uno o más tags no fueron encontrados');
-      }
-      movimiento.tags = tagsEntities;
-    }
 
     try {
       return await this.movimientoRepo.save(movimiento);

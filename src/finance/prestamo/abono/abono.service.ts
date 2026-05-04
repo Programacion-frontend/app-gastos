@@ -1,20 +1,19 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository, IsNull } from 'typeorm';
-import { Abono } from './entity/abono.entity';
+import { Categoria } from 'src/finance/categoria/entity/categoria.entity';
+import { CreateMovimientoDto } from 'src/finance/movimiento/movimiento/dto/create-movimiento.dto';
+import { Movimiento } from 'src/finance/movimiento/movimiento/entity/movimiento.entity';
+import { Usuario } from 'src/user/usuario/entity/usuario.entity';
+import { IsNull, Repository } from 'typeorm';
+import { Tag } from '../../tag/entity/tag.entity';
+import { Prestamo } from '../prestamos/entity/prestamo.entity';
 import { CreateAbonoDto } from './dto/create-abono.dto';
 import { UpdateAbonoDto } from './dto/update-abono.dto';
-import { Usuario } from 'src/user/usuario/entity/usuario.entity';
-import { Prestamo } from '../prestamos/entity/prestamo.entity';
-import { Tag } from '../../tag/entity/tag.entity';
-import { Categoria } from 'src/finance/categoria/entity/categoria.entity';
-import { Movimiento } from 'src/finance/movimiento/movimiento/entity/movimiento.entity';
-import { CreateMovimientoDto } from 'src/finance/movimiento/movimiento/dto/create-movimiento.dto';
-import { Moneda } from 'src/finance/moneda/entity/moneda.entity';
+import { Abono } from './entity/abono.entity';
 
 @Injectable()
 export class AbonoService {
@@ -275,7 +274,6 @@ export class AbonoService {
       descripcion: nuevoMovimiento.descripcion,
       id_categoria: categoriaGasto.id_categoria,
       id_usuario: user.id_usuario,
-      tags: tagsEntidades.map((t) => t.id_tag),
     };
 
     return respuestaFrontend;

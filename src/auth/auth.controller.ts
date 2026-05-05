@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { CreateUsuarioDto } from 'src/user/usuario/dto/create-usuario.dto';
+import type { Response } from 'express';
 import { RequestPasswordResetDto } from 'src/mail/dto/request-password-reset.dto';
 import { ResetPasswordDto } from 'src/mail/dto/reset-password.dto';
+import { CreateUsuarioDto } from 'src/user/usuario/dto/create-usuario.dto';
 import { ResendPasswordResetDto } from '../mail/dto/resend-password-reset.dto';
-import type { Response } from 'express';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth/jwt-auth.guard';
 
 @Controller('auth')
@@ -13,11 +13,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
 
-  @UseGuards(JwtAuthGuard) // Asumiendo que usas un Guard de JWT
+  @UseGuards(JwtAuthGuard)
   @Get('check-status')
   checkAuthStatus(@Request() req) {
-    // Si el Guard deja pasar la petición, significa que la cookie es válida
-    return req.user; // Devuelve los datos del usuario extraídos del token
+    return req.user; 
   }
 
   
@@ -37,10 +36,10 @@ export class AuthController {
 
 
     res.cookie('access_token', tokenObj.access_token, {
-      httpOnly: true, // El frontend no puede leerla con JS (protege contra XSS)
-      secure: false, // Poner en 'true' si usas HTTPS en producción
+      httpOnly: true, 
+      secure: false,
       sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24, // Expira en 1 día
+      maxAge: 1000 * 60 * 60 * 24, 
     });
 
     return { message: 'Autenticación exitosa' };
@@ -68,7 +67,7 @@ export class AuthController {
     res.clearCookie('access_token', {
       httpOnly: true,
       sameSite: 'lax',
-      secure: false, // true en producción con HTTPS
+      secure: false, 
     });
     return { message: 'Sesión cerrada correctamente' };
   }

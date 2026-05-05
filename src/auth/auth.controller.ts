@@ -16,7 +16,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('check-status')
   checkAuthStatus(@Request() req) {
-    return req.user; 
+    return req.user;
   }
 
   
@@ -36,7 +36,7 @@ export class AuthController {
 
 
     res.cookie('access_token', tokenObj.access_token, {
-      httpOnly: true, 
+      httpOnly: true,
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24, 

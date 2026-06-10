@@ -7,6 +7,7 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { Rol } from '../../rol/entity/rol.entity';
 import { PerfilUsuario } from '../../perfil/entity/perfil_usuario.entity';
 import { Movimiento } from '../../../finance/movimiento/movimiento/entity/movimiento.entity';
@@ -24,15 +25,19 @@ export class Usuario {
   email: string;
 
   @Column({ length: 255 })
+  @Exclude()
   password: string;
 
   @Column({ type: 'varchar', nullable: true })
+  @Exclude()
   passwordResetOTP: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
+  @Exclude()
   passwordResetExpires: Date | null;
 
   @Column({ default: 0 })
+  @Exclude()
   passwordResetAttempts: number;
 
   @ManyToOne(() => Rol, (rol) => rol.users)

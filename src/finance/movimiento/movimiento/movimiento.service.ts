@@ -82,24 +82,10 @@ private async obtenerMovimientosFiltrados(
     }
 
     query.orderBy('mov.fecha', 'DESC');
-    const movimientos = await query.getMany();
 
-    if (!movimientos.length) {
-      const filtrosAplicados = [
-          tipoCategoria ? `Tipo: ${tipoCategoria}` : null,
-          filters.termino ? `Termino: ${filters.termino}` : null,
-          filters.fechaInicio ? `Desde: ${filters.fechaInicio}` : null,
-          filters.tags ? `Tags: ${filters.tags}` : null
-      ].filter(Boolean).join(', ');
-
-      const msg = filtrosAplicados 
-        ? `No se encontraron movimientos con: ${filtrosAplicados}` 
-        : `No se encontraron movimientos registrados.`;
-
-      throw new NotFoundException(msg);
-    }
-
-    return movimientos;
+    // Una lista vacía es un resultado válido (200 []), no un error 404.
+    // El cliente decide cómo mostrar el estado "sin registros".
+    return query.getMany();
   }
 
   async create(createMovimientoDto: CreateMovimientoDto, user: Usuario) {

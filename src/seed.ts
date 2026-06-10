@@ -113,15 +113,13 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Monedas creadas');
 
-    // ---- Categorías ----
+    // ---- Categorías base por defecto: Ingresos y Gastos ----
     const categoriaRepo = dataSource.getRepository(Categoria);
-    const [catSalario, , , catComida] = await categoriaRepo.save([
+    const [catIngreso, catGasto] = await categoriaRepo.save([
       categoriaRepo.create({ tipo_categoria: 'ingreso' }),
-      categoriaRepo.create({ tipo_categoria: 'ingreso' }),
-      categoriaRepo.create({ tipo_categoria: 'gasto' }),
       categoriaRepo.create({ tipo_categoria: 'gasto' }),
     ]);
-    console.log('  ✅ Categorías creadas (ingreso / gasto)');
+    console.log('  ✅ Categorías base creadas (Ingresos y Gastos)');
 
     // ---- Usuarios (con perfil) ----
     const usuarioRepo = dataSource.getRepository(Usuario);
@@ -170,14 +168,14 @@ async function bootstrap() {
         monto: 2500000,
         fecha: new Date(),
         descripcion: 'Salario mensual',
-        categoria: catSalario,
+        categoria: catIngreso,
         usuario: demoUser,
       }),
       movimientoRepo.create({
         monto: 350000,
         fecha: new Date(),
         descripcion: 'Mercado del mes',
-        categoria: catComida,
+        categoria: catGasto,
         usuario: demoUser,
       }),
     ]);

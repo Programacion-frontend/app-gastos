@@ -18,7 +18,10 @@ import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Categorías')
+@ApiCookieAuth('access_token')
 @Controller('categoria')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class CategoriaController {

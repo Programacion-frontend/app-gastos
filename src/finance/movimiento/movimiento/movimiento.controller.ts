@@ -8,7 +8,10 @@ import { Roles } from 'src/auth/decorator/roles.decorator';
 import { CurrentUser } from 'src/auth/decorator/user.decorator';
 import { Usuario } from 'src/user/usuario/entity/usuario.entity';
 import { FilterMovimientoDto } from './dto/filter-movimiento.dto';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Movimientos')
+@ApiCookieAuth('access_token')
 @Controller('movimientos')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MovimientoController {

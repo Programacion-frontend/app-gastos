@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/Update-usuario.dto';
@@ -19,6 +20,8 @@ import { Roles } from 'src/auth/decorator/roles.decorator';
 import { CurrentUser } from 'src/auth/decorator/user.decorator'; // Importar
 import { Usuario } from './entity/usuario.entity'; // Importar
 
+@ApiTags('Usuarios')
+@ApiCookieAuth('access_token')
 @Controller('usuarios')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UsuarioController {

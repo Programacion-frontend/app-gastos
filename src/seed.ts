@@ -1,15 +1,3 @@
-/**
- * Script de carga de datos iniciales (seed).
- *
- * Uso:  npm run seed
- *
- * - Limpia los datos previos de las tablas sembradas ANTES de insertar.
- * - PROTECCIÓN: se niega a ejecutarse contra una base de datos de producción.
- *   Para forzarlo intencionalmente: SEED_FORCE=true npm run seed
- *
- * Reutiliza la configuración de TypeORM definida en AppModule, por lo que
- * usa las mismas variables de entorno (.env) que el resto de la aplicación.
- */
 import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -23,10 +11,7 @@ import { Moneda } from './finance/moneda/entity/moneda.entity';
 import { Categoria } from './finance/categoria/entity/categoria.entity';
 import { Movimiento } from './finance/movimiento/movimiento/entity/movimiento.entity';
 
-/**
- * Orden de limpieza: de las tablas "hijas" a las "padres" para no chocar con
- * llaves foráneas. Se desactivan temporalmente las FK por seguridad (MySQL).
- */
+
 const TABLES_TO_CLEAN = [
   'movimiento_tag',
   'abono',
@@ -64,7 +49,6 @@ async function limpiarDatos(dataSource: DataSource) {
 }
 
 async function bootstrap() {
-  // ---- PROTECCIÓN: no ejecutar en producción salvo orden explícita ----
   const isProd = process.env.NODE_ENV === 'production';
   const force = process.env.SEED_FORCE === 'true';
   if (isProd && !force) {
@@ -87,7 +71,6 @@ async function bootstrap() {
     console.log('🧹 Limpiando datos previos...');
     await limpiarDatos(dataSource);
 
-    // ---- Roles ----
     const rolRepo = dataSource.getRepository(Rol);
     const [rolAdmin, rolUsuario] = await rolRepo.save([
       rolRepo.create({ nombre: 'admin' }),
@@ -95,7 +78,7 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Roles creados (admin, usuario)');
 
-    // ---- Géneros ----
+
     const generoRepo = dataSource.getRepository(Genero);
     const [generoMasc] = await generoRepo.save([
       generoRepo.create({ nombre: 'Masculino' }),
@@ -104,7 +87,7 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Géneros creados');
 
-    // ---- Monedas ----
+
     const monedaRepo = dataSource.getRepository(Moneda);
     await monedaRepo.save([
       monedaRepo.create({ codigo: 'COP', simbolo: '$', tasa_cambio: 1.0 }),
@@ -113,7 +96,6 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Monedas creadas');
 
-    // ---- Categorías base por defecto: Ingresos y Gastos ----
     const categoriaRepo = dataSource.getRepository(Categoria);
     const [catIngreso, catGasto] = await categoriaRepo.save([
       categoriaRepo.create({ tipo_categoria: 'ingreso' }),
@@ -121,7 +103,6 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Categorías base creadas (Ingresos y Gastos)');
 
-    // ---- Usuarios (con perfil) ----
     const usuarioRepo = dataSource.getRepository(Usuario);
     const perfilRepo = dataSource.getRepository(PerfilUsuario);
     const salt = await bcrypt.genSalt(10);
@@ -161,7 +142,6 @@ async function bootstrap() {
     );
     console.log('  ✅ Usuarios creados (admin@migasto.com / usuario@migasto.com)');
 
-    // ---- Movimientos de ejemplo para el usuario demo ----
     const movimientoRepo = dataSource.getRepository(Movimiento);
     await movimientoRepo.save([
       movimientoRepo.create({

@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+npm-debug.log*
+
+
+.env
+.env.*
+
+.git
+.vscode
+*.md

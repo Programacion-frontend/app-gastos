@@ -17,7 +17,10 @@ import { UpdateMonedaDto } from './dto/update-moneda.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Monedas')
+@ApiCookieAuth('access_token')
 @Controller('monedas')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MonedaController {

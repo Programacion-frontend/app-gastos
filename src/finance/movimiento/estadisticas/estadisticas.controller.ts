@@ -5,7 +5,10 @@ import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { CurrentUser } from 'src/auth/decorator/user.decorator';
 import { Usuario } from 'src/user/usuario/entity/usuario.entity';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Estadísticas')
+@ApiCookieAuth('access_token')
 @Controller('movimientos/estadisticas')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class EstadisticasController {

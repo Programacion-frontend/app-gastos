@@ -11,6 +11,7 @@ import {
   ValidationPipe,
   Req,
 } from '@nestjs/common';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { PerfilService } from './perfil.service';
 import { CreatePerfilUsuarioDto } from './dto/create-perfil-usuario.dto';
 import { UpdatePerfilUsuarioDto } from './dto/update-perfil-usuario.dto';
@@ -18,6 +19,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 
+@ApiTags('Perfiles')
+@ApiCookieAuth('access_token')
 @Controller('perfiles')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PerfilController {

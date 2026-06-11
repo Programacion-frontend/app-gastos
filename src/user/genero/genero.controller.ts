@@ -16,7 +16,10 @@ import { UpdateGeneroDto } from './dto/Update-genero.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Géneros')
+@ApiCookieAuth('access_token')
 @Controller('genero')
 export class GeneroController {
   constructor(private readonly generoService: GeneroService) {}

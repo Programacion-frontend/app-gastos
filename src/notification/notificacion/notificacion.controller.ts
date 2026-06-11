@@ -10,7 +10,9 @@ import {
 import { NotificacionService } from './notificacion.service';
 import { CreateNotificacionDto } from './dto/create-notificacion.dto';
 import { UpdateNotificacionDto } from './dto/update-notificacion.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Notificaciones')
 @Controller('notificaciones')
 export class NotificacionController {
   constructor(private readonly notificacionService: NotificacionService) {}

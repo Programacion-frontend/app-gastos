@@ -14,7 +14,10 @@ import { UpdatePresupuestoDto } from './dto/update-presupuesto.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/jwt-auth/roles.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Presupuestos')
+@ApiCookieAuth('access_token')
 @Controller('presupuestos')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PresupuestoController {

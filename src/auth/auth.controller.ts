@@ -17,6 +17,17 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth/jwt-auth.guard';
 
+const isProd = process.env.NODE_ENV === 'production';
+
+// En producción el frontend y el backend viven en dominios distintos de
+// Render, por lo que la cookie es "cross-site": requiere SameSite=None y
+// Secure para que el navegador la envíe en las peticiones del frontend.
+const accessTokenCookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? ('none' as const) : ('lax' as const),
+};
+
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -61,9 +72,7 @@ export class AuthController {
     const tokenObj = await this.authService.login(email, password);
 
     res.cookie('access_token', tokenObj.access_token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      ...accessTokenCookieOptions,
       maxAge: 1000 * 60 * 60 * 24,
     });
 
@@ -91,11 +100,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Cerrar sesión (limpia la cookie)' })
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
-    });
+    res.clearCookie('access_token', accessTokenCookieOptions);
     return { message: 'Sesión cerrada correctamente' };
   }
 }

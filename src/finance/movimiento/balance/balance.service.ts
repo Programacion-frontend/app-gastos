@@ -36,18 +36,34 @@ export class BalanceService {
     const movimientos = await this.movimientoRepo.find({
       where,
       relations: ['categoria'],
-      order: { fecha: 'ASC' }
+      order: { fecha: 'ASC' },
     });
 
     const mesesNombre = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre',
     ];
 
     if (!movimientos || movimientos.length === 0) {
-       if (mes && anio) throw new NotFoundException(`No existen movimientos registrados en ${mesesNombre[mes - 1]} de ${anio}.`);
-       else if (anio) throw new NotFoundException(`No existen movimientos registrados en el año ${anio}.`);
-       else throw new NotFoundException('No existen movimientos registrados.');
+      if (mes && anio)
+        throw new NotFoundException(
+          `No existen movimientos registrados en ${mesesNombre[mes - 1]} de ${anio}.`,
+        );
+      else if (anio)
+        throw new NotFoundException(
+          `No existen movimientos registrados en el año ${anio}.`,
+        );
+      else throw new NotFoundException('No existen movimientos registrados.');
     }
 
     let totalGastos = 0;
@@ -55,12 +71,15 @@ export class BalanceService {
     let cantIngresos = 0;
     let cantGastos = 0;
 
-    const historialMap = new Map<number, { ingresos: number; gastos: number }>();
-    
+    const historialMap = new Map<
+      number,
+      { ingresos: number; gastos: number }
+    >();
+
     if (!mes) {
-        for (let i = 1; i <= 12; i++) {
-            historialMap.set(i, { ingresos: 0, gastos: 0 });
-        }
+      for (let i = 1; i <= 12; i++) {
+        historialMap.set(i, { ingresos: 0, gastos: 0 });
+      }
     }
 
     for (const mov of movimientos) {
@@ -68,7 +87,7 @@ export class BalanceService {
       const mesMov = new Date(mov.fecha).getMonth() + 1;
 
       if (!historialMap.has(mesMov)) {
-          historialMap.set(mesMov, { ingresos: 0, gastos: 0 });
+        historialMap.set(mesMov, { ingresos: 0, gastos: 0 });
       }
       const registroMes = historialMap.get(mesMov)!;
 
@@ -88,22 +107,35 @@ export class BalanceService {
     const promedioGasto = cantGastos > 0 ? totalGastos / cantGastos : 0;
 
     // --- PREPARAR GRÁFICAS ---
-    
+
     // 1. Gráfica Circular
     const graficaCircular = [
-        { name: 'Ingresos', value: totalIngresos },
-        { name: 'Gastos', value: totalGastos }
+      { name: 'Ingresos', value: totalIngresos },
+      { name: 'Gastos', value: totalGastos },
     ];
 
-    const nombresCortos = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const nombresCortos = [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
+    ];
     const graficaBarras = Array.from(historialMap.entries())
-        .sort((a, b) => a[0] - b[0])
-        .map(([keyMes, valores]) => ({
-            name: nombresCortos[keyMes - 1],
-            ingresos: valores.ingresos,
-            gastos: valores.gastos
-        }))
-        .filter(item => item.ingresos > 0 || item.gastos > 0);
+      .sort((a, b) => a[0] - b[0])
+      .map(([keyMes, valores]) => ({
+        name: nombresCortos[keyMes - 1],
+        ingresos: valores.ingresos,
+        gastos: valores.gastos,
+      }))
+      .filter((item) => item.ingresos > 0 || item.gastos > 0);
     return {
       totalGastos,
       totalIngresos,
@@ -119,15 +151,15 @@ export class BalanceService {
       },
 
       estadisticas: {
-          cantidadIngresos: cantIngresos,
-          cantidadGastos: cantGastos,
-          promedioIngreso: Number(promedioIngreso.toFixed(2)),
-          promedioGasto: Number(promedioGasto.toFixed(2))
+        cantidadIngresos: cantIngresos,
+        cantidadGastos: cantGastos,
+        promedioIngreso: Number(promedioIngreso.toFixed(2)),
+        promedioGasto: Number(promedioGasto.toFixed(2)),
       },
       graficas: {
-          circular: graficaCircular,
-          barras: graficaBarras 
-      }
+        circular: graficaCircular,
+        barras: graficaBarras,
+      },
     };
   }
 
@@ -137,7 +169,10 @@ export class BalanceService {
       relations: ['rol'],
     });
 
-    if (!currentUser) throw new NotFoundException(`Usuario con ID ${user.id_usuario} no encontrado`);
+    if (!currentUser)
+      throw new NotFoundException(
+        `Usuario con ID ${user.id_usuario} no encontrado`,
+      );
 
     const where: any = {};
     if (currentUser.rol?.nombre !== 'admin') {
@@ -152,15 +187,30 @@ export class BalanceService {
     });
 
     if (!movimientos || movimientos.length === 0) {
-      throw new NotFoundException(`No hay movimientos registrados en el año ${anio}`);
+      throw new NotFoundException(
+        `No hay movimientos registrados en el año ${anio}`,
+      );
     }
 
-    const historialMap = new Map<number, { mes: number; totalIngresos: number; totalGastos: number; balance: number }>();
+    const historialMap = new Map<
+      number,
+      {
+        mes: number;
+        totalIngresos: number;
+        totalGastos: number;
+        balance: number;
+      }
+    >();
 
     for (const mov of movimientos) {
       const mes = new Date(mov.fecha).getMonth() + 1;
       if (!historialMap.has(mes)) {
-        historialMap.set(mes, { mes, totalIngresos: 0, totalGastos: 0, balance: 0 });
+        historialMap.set(mes, {
+          mes,
+          totalIngresos: 0,
+          totalGastos: 0,
+          balance: 0,
+        });
       }
 
       const registro = historialMap.get(mes)!;
@@ -175,9 +225,17 @@ export class BalanceService {
       reg.balance = reg.totalIngresos - reg.totalGastos;
     }
 
-    const detalleMensual = Array.from(historialMap.values()).sort((a, b) => a.mes - b.mes);
-    const totalIngresos = detalleMensual.reduce((sum, h) => sum + h.totalIngresos, 0);
-    const totalGastos = detalleMensual.reduce((sum, h) => sum + h.totalGastos, 0);
+    const detalleMensual = Array.from(historialMap.values()).sort(
+      (a, b) => a.mes - b.mes,
+    );
+    const totalIngresos = detalleMensual.reduce(
+      (sum, h) => sum + h.totalIngresos,
+      0,
+    );
+    const totalGastos = detalleMensual.reduce(
+      (sum, h) => sum + h.totalGastos,
+      0,
+    );
     const balanceAnual = totalIngresos - totalGastos;
 
     return {
@@ -188,5 +246,5 @@ export class BalanceService {
       resumen: balanceAnual >= 0 ? 'Saldo positivo' : 'Saldo negativo',
       detalleMensual,
     };
-  } 
+  }
 }

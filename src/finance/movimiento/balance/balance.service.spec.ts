@@ -85,8 +85,16 @@ describe('BalanceService', () => {
 
   it('trata los montos string (decimales de TypeORM) como números', async () => {
     movimientoRepo.find.mockResolvedValue([
-      { monto: '1500.50', fecha: new Date('2026-03-01'), categoria: { tipo_categoria: 'ingreso' } },
-      { monto: '500.25', fecha: new Date('2026-03-02'), categoria: { tipo_categoria: 'gasto' } },
+      {
+        monto: '1500.50',
+        fecha: new Date('2026-03-01'),
+        categoria: { tipo_categoria: 'ingreso' },
+      },
+      {
+        monto: '500.25',
+        fecha: new Date('2026-03-02'),
+        categoria: { tipo_categoria: 'gasto' },
+      },
     ] as any);
 
     const result = await service.obtenerBalance(usuarioActual);

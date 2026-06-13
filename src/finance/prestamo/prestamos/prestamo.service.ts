@@ -91,7 +91,7 @@ export class PrestamoService {
 
     const savedPrestamo = await this.prestamoRepo.save(newPrestamo);
     //exluir datos del usuario en la respuesta
-    const { usuario: usuarioData, ...prestamoSinUsuario } = savedPrestamo;
+    const { usuario: _usuarioData, ...prestamoSinUsuario } = savedPrestamo;
     return {
       message: 'Préstamo creado correctamente',
       data: prestamoSinUsuario,

@@ -9,6 +9,6 @@ import { Categoria } from 'src/finance/categoria/entity/categoria.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Movimiento, Usuario, Categoria])],
   controllers: [EstadisticasController],
-  providers: [EstadisticasService]
+  providers: [EstadisticasService],
 })
 export class EstadisticasModule {}

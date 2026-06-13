@@ -8,6 +8,6 @@ import { Usuario } from 'src/user/usuario/entity/usuario.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Movimiento, Usuario])],
   controllers: [BalanceController],
-  providers: [BalanceService]
+  providers: [BalanceService],
 })
 export class BalanceModule {}

@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsDateString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateAbonoDto {

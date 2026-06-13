@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { RequestPasswordResetDto } from 'src/mail/dto/request-password-reset.dto';
@@ -45,24 +53,22 @@ export class AuthController {
   })
   @Post('login')
   async login(
-    @Body() loginDto: LoginDto, 
-    @Res({ passthrough: true }) res: Response
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
   ) {
     const { email, password } = loginDto;
-    
-    const tokenObj = await this.authService.login(email, password);
 
+    const tokenObj = await this.authService.login(email, password);
 
     res.cookie('access_token', tokenObj.access_token, {
       httpOnly: true,
       secure: false,
       sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24, 
+      maxAge: 1000 * 60 * 60 * 24,
     });
 
     return { message: 'Autenticación exitosa' };
   }
-
 
   @ApiOperation({ summary: 'Solicitar OTP de recuperación de contraseña' })
   @Post('request-password-reset')
@@ -85,11 +91,10 @@ export class AuthController {
   @ApiOperation({ summary: 'Cerrar sesión (limpia la cookie)' })
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-
     res.clearCookie('access_token', {
       httpOnly: true,
       sameSite: 'lax',
-      secure: false, 
+      secure: false,
     });
     return { message: 'Sesión cerrada correctamente' };
   }

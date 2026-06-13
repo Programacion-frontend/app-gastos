@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, In } from 'typeorm';
 import { Movimiento } from '../movimiento/entity/movimiento.entity';
@@ -28,10 +32,16 @@ export class EstadisticasService {
         relations: ['rol'],
       });
 
-      if (!currentUser) throw new NotFoundException(`Usuario con ID ${user.id_usuario} no encontrado`);
+      if (!currentUser)
+        throw new NotFoundException(
+          `Usuario con ID ${user.id_usuario} no encontrado`,
+        );
 
-      const categorias = await this.categoriaRepo.find({ where: { tipo_categoria: tipo } });
-      if (!categorias.length) throw new NotFoundException(`No existen categorías tipo ${tipo}`);
+      const categorias = await this.categoriaRepo.find({
+        where: { tipo_categoria: tipo },
+      });
+      if (!categorias.length)
+        throw new NotFoundException(`No existen categorías tipo ${tipo}`);
 
       const categoriaIds = categorias.map((c) => c.id_categoria);
       const where: any = { categoria: { id_categoria: In(categoriaIds) } };
@@ -59,7 +69,9 @@ export class EstadisticasService {
         else if (anio) filtroTxt = `en el año ${anio}`;
         else filtroTxt = 'para las estadísticas seleccionadas';
 
-        throw new NotFoundException(`No existen movimientos registrados ${filtroTxt}.`);
+        throw new NotFoundException(
+          `No existen movimientos registrados ${filtroTxt}.`,
+        );
       }
 
       const montos = movimientos.map((m) => Number(m.monto));
@@ -77,7 +89,10 @@ export class EstadisticasService {
           }
         }
       }
-      const graficoTags = Array.from(tagMap.entries()).map(([tag, total]) => ({ tag, total }));
+      const graficoTags = Array.from(tagMap.entries()).map(([tag, total]) => ({
+        tag,
+        total,
+      }));
 
       const mensualMap = new Map<number, number>();
       for (const mov of movimientos) {
@@ -108,7 +123,9 @@ export class EstadisticasService {
         },
       };
     } catch (error) {
-      throw new BadRequestException(`Error al obtener estadísticas: ${error.message}`);
+      throw new BadRequestException(
+        `Error al obtener estadísticas: ${error.message}`,
+      );
     }
   }
 }

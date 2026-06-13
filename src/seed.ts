@@ -11,7 +11,6 @@ import { Moneda } from './finance/moneda/entity/moneda.entity';
 import { Categoria } from './finance/categoria/entity/categoria.entity';
 import { Movimiento } from './finance/movimiento/movimiento/entity/movimiento.entity';
 
-
 const TABLES_TO_CLEAN = [
   'movimiento_tag',
   'abono',
@@ -78,7 +77,6 @@ async function bootstrap() {
     ]);
     console.log('  ✅ Roles creados (admin, usuario)');
 
-
     const generoRepo = dataSource.getRepository(Genero);
     const [generoMasc] = await generoRepo.save([
       generoRepo.create({ nombre: 'Masculino' }),
@@ -86,7 +84,6 @@ async function bootstrap() {
       generoRepo.create({ nombre: 'Otro' }),
     ]);
     console.log('  ✅ Géneros creados');
-
 
     const monedaRepo = dataSource.getRepository(Moneda);
     await monedaRepo.save([
@@ -140,7 +137,9 @@ async function bootstrap() {
         usuario: demoUser,
       }),
     );
-    console.log('  ✅ Usuarios creados (admin@migasto.com / usuario@migasto.com)');
+    console.log(
+      '  ✅ Usuarios creados (admin@migasto.com / usuario@migasto.com)',
+    );
 
     const movimientoRepo = dataSource.getRepository(Movimiento);
     await movimientoRepo.save([

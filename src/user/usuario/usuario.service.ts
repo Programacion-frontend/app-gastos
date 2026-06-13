@@ -35,7 +35,7 @@ export class UsuarioService {
     });
 
     await this.usuarioRepository.save(usuario);
-    const { password, ...result } = usuario;
+    const { password: _password, ...result } = usuario;
     return { message: 'Usuario creado', user: result };
   }
 

@@ -6,7 +6,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Movimiento } from '../../movimiento/movimiento/entity/movimiento.entity';
-import { on } from 'events';
 import { Tag } from 'src/finance/tag/entity/tag.entity';
 
 @Entity('categoria')

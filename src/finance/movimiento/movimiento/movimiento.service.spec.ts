@@ -20,8 +20,6 @@ describe('MovimientoService', () => {
   let movimientoRepo: any;
   let usuarioRepo: any;
   let categoriaRepo: any;
-  let monedaRepo: any;
-  let abonoRepo: any;
 
   const mockRepo = () => ({
     find: jest.fn(),
@@ -50,8 +48,6 @@ describe('MovimientoService', () => {
     movimientoRepo = module.get(getRepositoryToken(Movimiento));
     usuarioRepo = module.get(getRepositoryToken(Usuario));
     categoriaRepo = module.get(getRepositoryToken(Categoria));
-    monedaRepo = module.get(getRepositoryToken(Moneda));
-    abonoRepo = module.get(getRepositoryToken(Abono));
   });
 
   describe('create', () => {
@@ -94,7 +90,9 @@ describe('MovimientoService', () => {
         .mockResolvedValueOnce(otro); // userToAssign
       categoriaRepo.findOne.mockResolvedValue({ id_categoria: 5 });
 
-      await service.create({ ...dto, id_usuario: 2 }, { id_usuario: 1 } as Usuario);
+      await service.create({ ...dto, id_usuario: 2 }, {
+        id_usuario: 1,
+      } as Usuario);
 
       const creado = movimientoRepo.create.mock.calls[0][0];
       expect(creado.usuario).toBe(otro);

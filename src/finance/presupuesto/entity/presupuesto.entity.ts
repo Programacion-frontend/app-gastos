@@ -21,7 +21,9 @@ export class Presupuesto {
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   monto_maximo: number;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.presupuestos,{ onDelete: 'CASCADE'})
+  @ManyToOne(() => Usuario, (usuario) => usuario.presupuestos, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'id_usuario' })
   usuario: Usuario;
 }

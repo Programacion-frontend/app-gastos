@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  Matches,
-  IsInt,
-} from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, IsInt } from 'class-validator';
 
 export class CreateTagDto {
   @IsNotEmpty({ message: 'El nombre del tag es obligatorio.' })

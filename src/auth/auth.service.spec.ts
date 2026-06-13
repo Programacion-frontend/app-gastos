@@ -19,7 +19,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let usuarioRepo: any;
   let rolRepo: any;
-  let perfilRepo: any;
   let generoRepo: any;
   let jwtService: { sign: jest.Mock };
 
@@ -32,7 +31,11 @@ describe('AuthService', () => {
         { provide: JwtService, useValue: jwtService },
         {
           provide: getRepositoryToken(Usuario),
-          useValue: { findOne: jest.fn(), create: jest.fn((x) => x), save: jest.fn((x) => x) },
+          useValue: {
+            findOne: jest.fn(),
+            create: jest.fn((x) => x),
+            save: jest.fn((x) => x),
+          },
         },
         {
           provide: getRepositoryToken(Rol),
@@ -61,7 +64,6 @@ describe('AuthService', () => {
     service = module.get(AuthService);
     usuarioRepo = module.get(getRepositoryToken(Usuario));
     rolRepo = module.get(getRepositoryToken(Rol));
-    perfilRepo = module.get(getRepositoryToken(PerfilUsuario));
     generoRepo = module.get(getRepositoryToken(Genero));
 
     (bcrypt.genSalt as jest.Mock).mockResolvedValue('salt');
@@ -79,7 +81,10 @@ describe('AuthService', () => {
 
     beforeEach(() => {
       rolRepo.findOne.mockResolvedValue({ id: 2, nombre: 'usuario' });
-      generoRepo.findOne.mockResolvedValue({ id_genero: 1, nombre: 'Masculino' });
+      generoRepo.findOne.mockResolvedValue({
+        id_genero: 1,
+        nombre: 'Masculino',
+      });
       usuarioRepo.findOne.mockResolvedValue(null);
       usuarioRepo.save.mockResolvedValue({
         id_usuario: 10,
@@ -108,7 +113,10 @@ describe('AuthService', () => {
     });
 
     it('rechaza el registro si el email ya existe', async () => {
-      usuarioRepo.findOne.mockResolvedValue({ id_usuario: 1, email: dto.email });
+      usuarioRepo.findOne.mockResolvedValue({
+        id_usuario: 1,
+        email: dto.email,
+      });
 
       await expect(service.registerUser(dto)).rejects.toBeInstanceOf(
         BadRequestException,

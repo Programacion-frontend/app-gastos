@@ -21,8 +21,14 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL?.replace(/\/$/, ''),
+  ].filter(Boolean);
+
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:4200'],
+    origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -70,7 +76,7 @@ async function bootstrap() {
     },
   });
 
-  const port = process.env.SERVER_PORT || 3000;
+  const port = process.env.PORT || process.env.SERVER_PORT || 3000;
   await app.listen(port);
 
   console.log(`🚀 Server running on http://localhost:${port}/api`);

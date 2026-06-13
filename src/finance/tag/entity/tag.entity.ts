@@ -21,7 +21,7 @@ export class Tag {
   @ManyToMany(() => Movimiento, (movimiento) => movimiento.tags)
   movimientos: Movimiento[];
 
-  @ManyToOne(() => Usuario, { nullable: true,  onDelete: 'CASCADE'})
+  @ManyToOne(() => Usuario, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id_usuario' })
   usuario: Usuario;
 

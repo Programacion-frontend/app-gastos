@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import nodemailer from 'nodemailer';
 import { MailService } from './mail.service';
 import { MailProvider } from './providers/mail.provider';
 
@@ -10,8 +11,7 @@ import { MailProvider } from './providers/mail.provider';
     {
       provide: 'MAIL_TRANSPORT',
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => {
-        const nodemailer = await import('nodemailer');
+      useFactory: (config: ConfigService) => {
         return nodemailer.createTransport({
           host: config.get<string>('MAIL_HOST') || 'smtp.gmail.com',
           port: parseInt(config.get<string>('MAIL_PORT') || '465'),

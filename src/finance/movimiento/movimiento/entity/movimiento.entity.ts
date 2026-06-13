@@ -28,7 +28,10 @@ export class Movimiento {
   @Column({ length: 255, nullable: true })
   descripcion?: string;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.movimientos, { eager: false,  onDelete: 'CASCADE' })
+  @ManyToOne(() => Usuario, (usuario) => usuario.movimientos, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'id_usuario' })
   usuario: Usuario;
 

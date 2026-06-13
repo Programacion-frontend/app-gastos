@@ -21,7 +21,10 @@ export class CreateUsuarioDto {
   @MinLength(6)
   password: string;
 
-  @ApiProperty({ example: 2, description: 'ID del rol (2 = usuario, 1 = admin)' })
+  @ApiProperty({
+    example: 2,
+    description: 'ID del rol (2 = usuario, 1 = admin)',
+  })
   @IsInt()
   @IsNotEmpty()
   rolId: number;
@@ -42,7 +45,8 @@ export class CreateUsuarioDto {
   foto_perfil?: string;
 
   @ApiPropertyOptional({ example: '3001234567' })
-  @IsOptional() s;
+  @IsOptional()
+  s;
   @IsString()
   @Length(7, 20)
   telefono?: string;

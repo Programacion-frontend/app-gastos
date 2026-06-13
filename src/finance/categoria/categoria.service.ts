@@ -21,7 +21,7 @@ export class CategoriaService {
     try {
       const categoria = this.categoriaRepository.create(createCategoriaDto);
       return await this.categoriaRepository.save(categoria);
-    } catch (error) {
+    } catch {
       throw new InternalServerErrorException('Error al crear la categoría');
     }
   }
@@ -29,7 +29,7 @@ export class CategoriaService {
   async findAll(): Promise<Categoria[]> {
     try {
       return await this.categoriaRepository.find();
-    } catch (error) {
+    } catch {
       throw new InternalServerErrorException('Error al obtener las categorías');
     }
   }

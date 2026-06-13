@@ -14,7 +14,7 @@ export class Prestamo {
   @PrimaryGeneratedColumn()
   id_prestamo: number;
 
-  @ManyToOne(() => Usuario, { eager: true,  onDelete: 'CASCADE' })
+  @ManyToOne(() => Usuario, { eager: true, onDelete: 'CASCADE' })
   usuario: Usuario;
 
   @Column({ length: 200 })

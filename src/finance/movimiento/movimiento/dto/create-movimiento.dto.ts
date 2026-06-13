@@ -6,7 +6,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsString
+  IsString,
 } from 'class-validator';
 
 export class CreateMovimientoDto {
@@ -26,7 +26,10 @@ export class CreateMovimientoDto {
   @IsString({ message: 'La descripción debe ser un texto' })
   descripcion?: string;
 
-  @ApiProperty({ example: 2, description: 'ID de la categoría (ingreso/gasto)' })
+  @ApiProperty({
+    example: 2,
+    description: 'ID de la categoría (ingreso/gasto)',
+  })
   @IsNotEmpty({ message: 'La categoría es obligatoria' })
   @IsInt({ message: 'El ID de la categoría debe ser un número entero' })
   id_categoria: number;

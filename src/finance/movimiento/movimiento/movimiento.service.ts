@@ -17,7 +17,6 @@ import { FilterMovimientoDto } from './dto/filter-movimiento.dto';
 import { UpdateMovimientoDto } from './dto/update-movimiento.dto';
 import { Movimiento } from './entity/movimiento.entity';
 
-
 @Injectable()
 export class MovimientoService {
   constructor(
@@ -37,7 +36,7 @@ export class MovimientoService {
     private readonly abonoRepo: Repository<Abono>,
   ) {}
 
-private async obtenerMovimientosFiltrados(
+  private async obtenerMovimientosFiltrados(
     user: Usuario,
     filters: FilterMovimientoDto,
     tipoCategoria?: string,
@@ -58,15 +57,19 @@ private async obtenerMovimientosFiltrados(
       .leftJoinAndSelect('mov.usuario', 'usu');
 
     if (currentUser.rol?.nombre !== 'admin') {
-      query.andWhere('usu.id_usuario = :userId', { userId: currentUser.id_usuario });
+      query.andWhere('usu.id_usuario = :userId', {
+        userId: currentUser.id_usuario,
+      });
     }
 
     if (tipoCategoria) {
-      query.andWhere('LOWER(cat.tipo_categoria) = LOWER(:tipo)', { tipo: tipoCategoria });
+      query.andWhere('LOWER(cat.tipo_categoria) = LOWER(:tipo)', {
+        tipo: tipoCategoria,
+      });
     }
     if (filters.termino && filters.termino.trim()) {
-      query.andWhere('LOWER(mov.descripcion) LIKE :termino', { 
-        termino: `%${filters.termino.toLowerCase()}%` 
+      query.andWhere('LOWER(mov.descripcion) LIKE :termino', {
+        termino: `%${filters.termino.toLowerCase()}%`,
       });
     }
 
@@ -89,14 +92,8 @@ private async obtenerMovimientosFiltrados(
   }
 
   async create(createMovimientoDto: CreateMovimientoDto, user: Usuario) {
-    const {
-      monto,
-      fecha,
-      descripcion,
-      id_categoria,
-      id_moneda,
-      id_usuario,
-    } = createMovimientoDto;
+    const { monto, fecha, descripcion, id_categoria, id_moneda, id_usuario } =
+      createMovimientoDto;
     const currentUser = await this.usuarioRepo.findOne({
       where: { id_usuario: user.id_usuario },
       relations: ['rol'],
@@ -159,7 +156,6 @@ private async obtenerMovimientosFiltrados(
       movimiento.moneda = moneda;
     }
 
-
     try {
       return await this.movimientoRepo.save(movimiento);
     } catch (error) {
@@ -173,7 +169,11 @@ private async obtenerMovimientosFiltrados(
     return this.obtenerMovimientosFiltrados(user, filters);
   }
 
-async findByCategoriaTipo(tipo: string, user: Usuario, filters: FilterMovimientoDto) {
+  async findByCategoriaTipo(
+    tipo: string,
+    user: Usuario,
+    filters: FilterMovimientoDto,
+  ) {
     return this.obtenerMovimientosFiltrados(user, filters, tipo);
   }
 

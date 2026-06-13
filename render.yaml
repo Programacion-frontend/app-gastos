@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: app-gastos-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_HOST
+        sync: false # MySQL externo: Render no ofrece MySQL administrado (solo Postgres/Redis).
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: MAIL_HOST
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: '465'
+      - key: MAIL_USER
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        sync: false # URL del frontend en Render, sin "/" final (para CORS)
+# Render inyecta PORT automáticamente; main.ts ya lo respeta (process.env.PORT || SERVER_PORT || 3000).
+# UptimeRobot: tras el primer deploy, crea un monitor HTTP(s) apuntando a https://<esta-url>/api
+# cada 5 min para evitar que el free tier de Render se "duerma".

@@ -1,12 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTagDto } from './create-tag.dto';
-import {
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  Matches,
-  MaxLength,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class UpdateTagDto extends PartialType(CreateTagDto) {
   @IsNotEmpty({ message: 'El nombre del tag es obligatorio.' })

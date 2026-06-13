@@ -93,13 +93,13 @@ export class AuthService {
     });
 
     if (user && (await bcrypt.compare(plainPassword, user.password))) {
-      const { password, ...result } = user;
+      const { password: _password, ...result } = user;
       return result;
     }
     return null;
   }
 
-  async generateToken(user: any): Promise<{ access_token: string }> {
+  generateToken(user: any): { access_token: string } {
     const payload = {
       sub: user.id_usuario,
       email: user.email,

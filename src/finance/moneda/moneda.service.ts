@@ -24,7 +24,7 @@ export class MonedaService {
       const moneda = this.monedaRepository.create(createMonedaDto);
       const savedMoneda = await this.monedaRepository.save(moneda);
       return { message: 'Moneda creada exitosamente', data: savedMoneda };
-    } catch (error) {
+    } catch {
       throw new InternalServerErrorException('Error al crear la moneda');
     }
   }

@@ -12,10 +12,10 @@ export class MailProvider {
     @Inject('MAIL_TRANSPORT') private readonly transporter: Transporter,
   ) {}
 
-  private async renderTemplate(
+  private renderTemplate(
     templateName: string,
     context: Record<string, any>,
-  ): Promise<string> {
+  ): string {
     const templatePath = path.join(
       __dirname,
       '..',
@@ -34,7 +34,7 @@ export class MailProvider {
     context: Record<string, any>,
   ) {
     try {
-      const html = await this.renderTemplate(template, context);
+      const html = this.renderTemplate(template, context);
       await this.transporter.sendMail({
         from: `"Mi Gasto" <${process.env.MAIL_USER}>`,
         to,

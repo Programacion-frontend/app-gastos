@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, ValidationPipe, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+  ValidationPipe,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { MovimientoService } from './movimiento.service';
 import { CreateMovimientoDto } from './dto/create-movimiento.dto';
 import { UpdateMovimientoDto } from './dto/update-movimiento.dto';
@@ -19,16 +31,16 @@ export class MovimientoController {
 
   @Post()
   @Roles('admin', 'usuario')
-  create(@Body(new ValidationPipe()) createMovimientoDto: CreateMovimientoDto, @CurrentUser() user: Usuario) {
+  create(
+    @Body(new ValidationPipe()) createMovimientoDto: CreateMovimientoDto,
+    @CurrentUser() user: Usuario,
+  ) {
     return this.movimientoService.create(createMovimientoDto, user);
   }
 
   @Get()
   @Roles('admin', 'usuario')
-  findAll(
-    @CurrentUser() user: Usuario,
-    @Query() filters: FilterMovimientoDto,
-  ) {
+  findAll(@CurrentUser() user: Usuario, @Query() filters: FilterMovimientoDto) {
     return this.movimientoService.findAll(user, filters);
   }
 
@@ -36,7 +48,8 @@ export class MovimientoController {
   @Roles('admin', 'usuario')
   findIngresos(
     @CurrentUser() user: Usuario,
-    @Query() filters: FilterMovimientoDto,) {
+    @Query() filters: FilterMovimientoDto,
+  ) {
     return this.movimientoService.findByCategoriaTipo('ingreso', user, filters);
   }
 
@@ -44,20 +57,28 @@ export class MovimientoController {
   @Roles('admin', 'usuario')
   findGastos(
     @CurrentUser() user: Usuario,
-    @Query() filters: FilterMovimientoDto,) {
+    @Query() filters: FilterMovimientoDto,
+  ) {
     return this.movimientoService.findByCategoriaTipo('gasto', user, filters);
   }
 
-
   @Get(':id')
   @Roles('admin', 'usuario')
-  findById(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: Usuario) {
+  findById(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: Usuario,
+  ) {
     return this.movimientoService.findId(id, user);
   }
 
   @Patch(':id')
   @Roles('admin', 'usuario')
-  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({ whitelist: true })) updateMovimientoDto: UpdateMovimientoDto, @CurrentUser() user: Usuario) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ValidationPipe({ whitelist: true }))
+    updateMovimientoDto: UpdateMovimientoDto,
+    @CurrentUser() user: Usuario,
+  ) {
     return this.movimientoService.update(id, updateMovimientoDto, user);
   }
 
